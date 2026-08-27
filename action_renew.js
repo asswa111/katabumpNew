@@ -688,15 +688,17 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                 await emailInput.fill(user.username);
                 const pwdInput = page.getByRole('textbox', { name: 'Password' });
                 await pwdInput.fill(user.password);
-                await page.waitForTimeout(500);
-
+               
+ await page.waitForTimeout(2000 + Math.random() * 120);
                 // --- Cloudflare Turnstile Bypass for Login ---
                 console.log('   >> 正在登录前检查 Turnstile (使用 CDP 绕过)...');
                 let cdpClickResult = false;
                 for (let findAttempt = 0; findAttempt < 15; findAttempt++) {
                     cdpClickResult = await attemptTurnstileCdp(page);
                     if (cdpClickResult) break;
-                    await page.waitForTimeout(1000);
+                  
+                     // 增加随机人类延迟
+    await page.waitForTimeout(1000 + Math.random() * 120);
                 }
 
                 if (cdpClickResult) {
@@ -718,7 +720,8 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                             console.log('   >> 登录前 Turnstile 验证成功。');
                             break;
                         }
-                        await page.waitForTimeout(1000);
+                        // 增加随机人类延迟
+    await page.waitForTimeout(1000 + Math.random() * 120);
                     }
                 } else {
                     console.log('   >> 登录前未检测到或未点击 Turnstile，继续操作...');
@@ -726,8 +729,7 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                 // --------------------------------------------
 
 
-    // 增加随机人类延迟
-    await page.waitForTimeout(800 + Math.random() * 1200);
+   
 
                 await page.getByRole('button', { name: 'Login', exact: true }).click();
 
@@ -752,10 +754,14 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                 console.log('登录错误:', e.message);
             }
 
+            
+console.log('当前 URL:', page.url());    
             console.log('正在寻找 "See" 链接...');
             try {
                 await page.getByRole('link', { name: 'See' }).first().waitFor({ timeout: 15000 });
-                await page.waitForTimeout(1000);
+              
+                 // 增加随机人类延迟
+    await page.waitForTimeout(1000 + Math.random() * 120);
                 await page.getByRole('link', { name: 'See' }).first().click();
             } catch (e) {
                 console.log('未找到 "See" 按钮。',e);
