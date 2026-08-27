@@ -701,7 +701,7 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
     await page.waitForTimeout(1000 + Math.random() * 120);
                 }
 
-          await      if (cdpClickResult) {
+                if (cdpClickResult) {
                     console.log('   >> 登录 CDP 点击生效。正在等待最多 30秒 Cloudflare 成功标志...');
                     for (let waitSec = 0; waitSec < 30; waitSec++) {
                         const frames = page.frames();
@@ -730,7 +730,8 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
 
 
    
-
+ // 增加随机人类延迟
+    await page.waitForTimeout(10000 + Math.random() * 1200);
                 await page.getByRole('button', { name: 'Login', exact: true }).click();
 
                 // User Request: Check for incorrect password
