@@ -280,8 +280,8 @@ async function attemptTurnstileCdp(page) {
                 const box = await iframeElement.boundingBox();
                 if (!box) continue;
 
-                const clickX = box.x + (box.width * data.xRatio)+Math.random() * 0.01;
-                const clickY = box.y + (box.height * data.yRatio)+Math.random() * 0.01;
+                const clickX = box.x + (box.width * data.xRatio);
+                const clickY = box.y + (box.height * data.yRatio);
 
                 console.log(`>> 计算点击坐标: (${clickX.toFixed(2)}, ${clickY.toFixed(2)})`);
 
@@ -712,8 +712,12 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                                     if (await f.getByText('Success!', { exact: false }).isVisible({ timeout: 1000 })) {
                                         isSuccess = true;
                                         break;
+                                    }else{
+                                          console.log('验证失败:', e.message);
                                     }
-                                } catch (e) { }
+                                } catch (e) {
+                                     console.log('验证失败:', e.message);
+                                }
                             }
                         }
                         if (isSuccess) {
@@ -749,7 +753,9 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
 
                         continue;
                     }
-                } catch (e) { }
+                } catch (e) {
+                    
+                }
 
             } catch (e) {
                 console.log('登录错误:', e.message);
