@@ -701,15 +701,15 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
     await page.waitForTimeout(1000 + Math.random() * 120);
                 }
 
-                if (cdpClickResult) {
-                    console.log('   >> 登录 CDP 点击生效。正在等待最多 10秒 Cloudflare 成功标志...');
-                    for (let waitSec = 0; waitSec < 10; waitSec++) {
+          await      if (cdpClickResult) {
+                    console.log('   >> 登录 CDP 点击生效。正在等待最多 30秒 Cloudflare 成功标志...');
+                    for (let waitSec = 0; waitSec < 30; waitSec++) {
                         const frames = page.frames();
                         let isSuccess = false;
                         for (const f of frames) {
                             if (f.url().includes('cloudflare')) {
                                 try {
-                                    if (await f.getByText('Success!', { exact: false }).isVisible({ timeout: 500 })) {
+                                    if (await f.getByText('Success!', { exact: false }).isVisible({ timeout: 1000 })) {
                                         isSuccess = true;
                                         break;
                                     }
