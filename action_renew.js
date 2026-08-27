@@ -484,7 +484,7 @@ async function attemptAltchaClick(page, currentStatus = null) {
                         }
                     }
                 });
-
+rVpmeCvo.rVpmeCvo
                 return true;
             } else {
                 console.log('>> 找到了 ALTCHA 元素，但获取不到有效大小，跳过点击。');
@@ -673,6 +673,7 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
             // 总是先去登录页
             await page.goto('https://dashboard.katabump.com/auth/login');
             await page.waitForTimeout(2000);
+
             if (page.url().includes('dashboard')) {
                 // 如果登出没成功，再次登出
                 await page.goto('https://dashboard.katabump.com/auth/logout');
@@ -723,7 +724,20 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                     console.log('   >> 登录前未检测到或未点击 Turnstile，继续操作...');
                 }
                 // --------------------------------------------
+            // 在 solveAltchaIfPresent 内部，增加更长的等待 + 人类行为
+while (Date.now() - startedAt < totalWaitBudget) {
+    const status = await getAltchaStatus(page);
+    if (status.exists) sawAltcha = true;
 
+    // 增加随机人类延迟
+    await page.waitForTimeout(800 + Math.random() * 1200);
+
+    // 如果进入 verifying，再等更久
+    if (status.isVerifying) {
+        await page.waitForTimeout(1500 + Math.random() * 2000);
+        continue;
+    }
+}
                 await page.getByRole('button', { name: 'Login', exact: true }).click();
 
                 // User Request: Check for incorrect password
