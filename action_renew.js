@@ -280,8 +280,8 @@ async function attemptTurnstileCdp(page) {
                 const box = await iframeElement.boundingBox();
                 if (!box) continue;
 
-                const clickX = box.x + (box.width * data.xRatio);
-                const clickY = box.y + (box.height * data.yRatio);
+                const clickX = box.x + (box.width * data.xRatio)+Math.random() * 0.01;
+                const clickY = box.y + (box.height * data.yRatio)+Math.random() * 0.01;
 
                 console.log(`>> 计算点击坐标: (${clickX.toFixed(2)}, ${clickY.toFixed(2)})`);
 
@@ -693,7 +693,7 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
                 // --- Cloudflare Turnstile Bypass for Login ---
                 console.log('   >> 正在登录前检查 Turnstile (使用 CDP 绕过)...');
                 let cdpClickResult = false;
-                for (let findAttempt = 0; findAttempt < 15; findAttempt++) {
+                for (let findAttempt = 0; findAttempt < 30; findAttempt++) {
                     cdpClickResult = await attemptTurnstileCdp(page);
                     if (cdpClickResult) break;
                   
@@ -731,7 +731,7 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
 
    
  // 增加随机人类延迟
-    await page.waitForTimeout(10000 + Math.random() * 1200);
+    await page.waitForTimeout(30000 + Math.random() * 1200);
                 await page.getByRole('button', { name: 'Login', exact: true }).click();
 
                 // User Request: Check for incorrect password
